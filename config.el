@@ -53,9 +53,11 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-;; ----------------------------------------------------------------------------
-;; General editor configuration
-;; ----------------------------------------------------------------------------
+;; ---------------------------------------------------------------------------- ;;
+;;                                                                              ;;
+;;                         GENERAL EDITOR CONFIGURATION                         ;;
+;;                                                                              ;;
+;; ---------------------------------------------------------------------------- ;;
 
 (setq doom-font (font-spec :family "Fira Code" :size 14 :weight 'normal))
 (defun config-font ()
@@ -101,9 +103,40 @@
 
 (setq vc-follow-symlinks nil)
 
-;; ----------------------------------------------------------------------------
-;; Key bindings
-;; ----------------------------------------------------------------------------
+;; ---------------------------------------------------------------------------- ;;
+;;                                                                              ;;
+;;                            BUFFERS CONFIGURATION                             ;;
+;;                                                                              ;;
+;; ---------------------------------------------------------------------------- ;;
+
+(defcustom buffer-skip-regexp
+  (rx bos (or (or "*Backtrace*" "*Compile-Log*" "*Completions*"
+                  "*Messages*" "*package*" "*Warnings*"
+                  "*scratch*"
+                  "*Async-native-compile-log*"
+                  "*Native-compile-Log*"
+                  "*doom*")
+              (seq (zero-or-more anything) "lsp" (zero-or-more anything))
+              (seq "magit-diff" (zero-or-more anything))
+              (seq "magit-process" (zero-or-more anything))
+              (seq "magit-revision" (zero-or-more anything))
+              (seq "magit-stash" (zero-or-more anything)))
+              eos)
+  "Regular expression matching buffers ignored by `next-buffer' and
+`previous-buffer'."
+  :type 'regexp)
+
+(defun buffer-skip-p (window buffer bury-or-kill)
+  "Return t if BUFFER name matches `buffer-skip-regexp'."
+  (string-match-p buffer-skip-regexp (buffer-name buffer)))
+
+(setq switch-to-prev-buffer-skip 'buffer-skip-p)
+
+;; ---------------------------------------------------------------------------- ;;
+;;                                                                              ;;
+;;                                KEY BINDINGS                                  ;;
+;;                                                                              ;;
+;; ---------------------------------------------------------------------------- ;;
 
 ;; Not useful if merlin is replaced with OcamlLSP
 ;; (defun my/next-error ()
@@ -163,9 +196,11 @@
 
 (global-set-key (kbd "C-x C-;") 'comment-line)
 
-;; ----------------------------------------------------------------------------
-;; Custom modules for some languages
-;; ----------------------------------------------------------------------------
+;; ---------------------------------------------------------------------------- ;;
+;;                                                                              ;;
+;;                      CUSTOM MODULES FOR SOME LANGUAGES                       ;;
+;;                                                                              ;;
+;; ---------------------------------------------------------------------------- ;;
 
 ;; load why3 package
 (load! "why3")
@@ -173,9 +208,11 @@
 ;; load mix package
 (load! "mix.el")
 
-;; ----------------------------------------------------------------------------
-;; Auto completion
-;; ----------------------------------------------------------------------------
+;; ---------------------------------------------------------------------------- ;;
+;;                                                                              ;;
+;;                              AUTO-COMPLETION                                 ;;
+;;                                                                              ;;
+;; ---------------------------------------------------------------------------- ;;
 
 (require 'company)
 (define-key company-active-map [tab] 'company-complete-selection)
@@ -184,9 +221,11 @@
 (define-key company-active-map (kbd "RET") nil)
 (setq company-idle-delay 0)
 
-;; ----------------------------------------------------------------------------
-;; OCAML CONFIGURATION
-;; ----------------------------------------------------------------------------
+;; ---------------------------------------------------------------------------- ;;
+;;                                                                              ;;
+;;                             OCAML CONFIGURATION                              ;;
+;;                                                                              ;;
+;; ---------------------------------------------------------------------------- ;;
 
 (let ((opam-share (ignore-errors (car (process-lines "opam" "var" "share")))))
   (when (and opam-share (file-directory-p opam-share))
@@ -270,9 +309,11 @@
 
 (setq lsp-ocaml-lsp-server-command '("ocamllsp" "--fallback-read-dot-merlin"))
 
-;; ----------------------------------------------------------------------------
-;; COQ CONFIGURATION
-;; ----------------------------------------------------------------------------
+;; ---------------------------------------------------------------------------- ;;
+;;                                                                              ;;
+;;                              COQ CONFIGURATION                               ;;
+;;                                                                              ;;
+;; ---------------------------------------------------------------------------- ;;
 
 (add-hook 'coq-mode-hook
   (lambda ()
@@ -296,9 +337,11 @@
 
 (add-hook 'coq-mode-hook 'coq-prettify-symbols)
 
-;; ----------------------------------------------------------------------------
-;; Python CONFIGURATION
-;; ----------------------------------------------------------------------------
+;; ---------------------------------------------------------------------------- ;;
+;;                                                                              ;;
+;;                            PYTHON CONFIGURATION                              ;;
+;;                                                                              ;;
+;; ---------------------------------------------------------------------------- ;;
 
 ;; (add-hook 'python-mode-hook 'pyvenv-mode-hook)
 (defun my/python-mode-hook ()
@@ -315,9 +358,11 @@
 ;; (add-hook 'python-mode-hook 'jedi:setup)
 ;; (setq jedi:complete-on-dot t)
 
-;; ----------------------------------------------------------------------------
-;; LATEX CONFIGURATION
-;; ----------------------------------------------------------------------------
+;; ---------------------------------------------------------------------------- ;;
+;;                                                                              ;;
+;;                              LATEX CONFIGURATION                             ;;
+;;                                                                              ;;
+;; ---------------------------------------------------------------------------- ;;
 
 (defun latex-init ()
   (interactive nil)
@@ -329,9 +374,11 @@
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
 (add-hook 'LaTeX-mode-hook 'latex-init)
 
-;; ----------------------------------------------------------------------------
-;; ORG MODE CONFIGURATION
-;; ----------------------------------------------------------------------------
+;; ---------------------------------------------------------------------------- ;;
+;;                                                                              ;;
+;;                             ORG MODE CONFIGURATION                           ;;
+;;                                                                              ;;
+;; ---------------------------------------------------------------------------- ;;
 
 (setq org-support-shift-select t)
 
@@ -341,9 +388,11 @@
    (python . t)
    (ocaml . t)))
 
-;; ----------------------------------------------------------------------------
-;; MISCELLANEOUS
-;; ----------------------------------------------------------------------------
+;; ---------------------------------------------------------------------------- ;;
+;;                                                                              ;;
+;;                                  MISCELLANEOUS                               ;;
+;;                                                                              ;;
+;; ---------------------------------------------------------------------------- ;;
 
 ;; (require 'iso-transl)
 
