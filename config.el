@@ -108,6 +108,8 @@
 
 (setq vc-follow-symlinks nil)
 
+(remove-hook 'doom-first-buffer-hook #'smartparens-global-mode)
+
 ;; ---------------------------------------------------------------------------- ;;
 ;;                                                                              ;;
 ;;                            BUFFERS CONFIGURATION                             ;;
