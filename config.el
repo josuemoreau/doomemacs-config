@@ -71,6 +71,11 @@
 
 (setq shell-file-name "/bin/sh")
 
+;; tab width
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 2)
+(setq indent-line-function 'insert-tab)
+
 ;; rule at 80 characters
 ;; (require 'fill-column-indicator)
 ;; (setq fci-rule-color "#2A4D44")
@@ -158,6 +163,7 @@
 (global-set-key [f5]   'compile)
 (global-set-key [f6]   'recompile)
 (global-set-key [f7]   'next-error)
+(global-set-key (kbd "C-x <f7>") 'flycheck-copy-errors-as-kill)
 ;; (global-set-key [f7] (lambda ()
 ;;                        (interactive)
 ;;                        (progn
