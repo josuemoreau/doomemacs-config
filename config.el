@@ -122,7 +122,7 @@
                   "*scratch*"
                   "*Async-native-compile-log*"
                   "*Native-compile-Log*"
-                  "*doom*")
+                  "*doom*" "*coq*" "*goals*" "*response*")
               (seq (zero-or-more anything) "lsp" (zero-or-more anything))
               (seq "magit-diff" (zero-or-more anything))
               (seq "magit-process" (zero-or-more anything))
@@ -346,6 +346,18 @@
   (prettify-symbols-mode))
 
 (add-hook 'coq-mode-hook 'coq-prettify-symbols)
+
+(defun coq-keymaps ()
+  "Set local coq-mode keybindings."
+  (interactive)
+  (local-set-key (kbd "C-M-c") #'coq-Check))
+
+(add-hook 'coq-mode-hook #'coq-keymaps)
+
+;; Fix for slow startup
+;; https://github.com/doomemacs/doomemacs/issues/5823
+(after! doom-editor
+  (add-to-list 'doom-detect-indentation-excluded-modes 'coq-mode))
 
 ;; ---------------------------------------------------------------------------- ;;
 ;;                                                                              ;;
