@@ -352,11 +352,18 @@
 (defun coq-keymaps ()
   "Set local coq-mode keybindings."
   (interactive)
-  (local-set-key (kbd "C-M-c") #'coq-Check))
+  (local-set-key (kbd "C-M-c") #'coq-Check)
+  (local-set-key (kbd "C-M-p") #'coq-Print))
 
 (add-hook 'coq-mode-hook #'coq-keymaps)
 
-;; Fix for slow startup
+(add-hook 'coq-mode-hook
+          (lambda ()
+            (progn
+              (setq abbrev-expand-function #'ignore)
+              )))
+
+;; Fix for slow startup in doom emacs
 ;; https://github.com/doomemacs/doomemacs/issues/5823
 (after! doom-editor
   (add-to-list 'doom-detect-indentation-excluded-modes 'coq-mode))
