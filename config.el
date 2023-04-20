@@ -328,13 +328,6 @@
 ;;                                                                              ;;
 ;; ---------------------------------------------------------------------------- ;;
 
-(add-hook 'coq-mode-hook
-  (lambda ()
-    (progn
-      (define-key coq-mode-map [tab] 'smie-indent-line)
-      (define-key coq-mode-map (kbd "TAB") 'smie-indent-line)
-    )))
-
 (setq coq-prog-name "/home/josue/.opam/ocaml/bin/coqtop")
 ;; disables Proof General splash screen at startup
 (setq proof-splash-enable nil)
@@ -352,9 +345,19 @@
 
 (defun coq-keymaps ()
   "Set local coq-mode keybindings."
-  (interactive)
+  (define-key coq-mode-map [tab] 'smie-indent-line)
+  (define-key coq-mode-map (kbd "TAB") 'smie-indent-line)
   (local-set-key (kbd "C-M-c") #'coq-Check)
   (local-set-key (kbd "C-M-p") #'coq-Print))
+
+;; Add some monadic notations
+(add-hook 'coq-mode-hook
+  (lambda ()
+    (dolist (token '(("doo" . "let monadic")
+                     ("dob" . "let monadic")
+                     ("do*" . "let monadic")
+                     ("doo*" . "let monadic")))
+      (add-to-list 'coq-smie-monadic-tokens token))))
 
 (add-hook 'coq-mode-hook #'coq-keymaps)
 
