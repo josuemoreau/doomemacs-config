@@ -110,6 +110,8 @@
 
 (remove-hook 'doom-first-buffer-hook #'smartparens-global-mode)
 
+(setq doom-theme 'doom-dracula)
+
 ;; ---------------------------------------------------------------------------- ;;
 ;;                                                                              ;;
 ;;                            BUFFERS CONFIGURATION                             ;;
