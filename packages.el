@@ -11,6 +11,7 @@
 (package! tuareg)
 (package! fill-column-indicator)
 (package! proof-general)
+(package! company-coq)
 (package! company-jedi)
 (package! pyvenv)
 (package! auctex)

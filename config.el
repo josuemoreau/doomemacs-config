@@ -226,12 +226,13 @@
 ;;                                                                              ;;
 ;; ---------------------------------------------------------------------------- ;;
 
-(require 'company)
-(define-key company-active-map [tab] 'company-complete-selection)
-(define-key company-active-map (kbd "TAB") 'company-complete-selection)
-(define-key company-active-map [return] nil)
-(define-key company-active-map (kbd "RET") nil)
-(setq company-idle-delay 0)
+;; (require 'company)
+(with-eval-after-load 'company
+  (define-key company-active-map [tab] 'company-complete-selection)
+  (define-key company-active-map (kbd "TAB") 'company-complete-selection)
+  (define-key company-active-map [return] nil)
+  (define-key company-active-map (kbd "RET") nil)
+  (setq company-idle-delay 0))
 
 ;; ---------------------------------------------------------------------------- ;;
 ;;                                                                              ;;
@@ -372,6 +373,33 @@
   '(progn
      (setq electric-indent-mode nil)
      ))
+
+;; Fix for auto-completion not starting in doom emacs
+;;   There is a problem between company-coq, proof general and doom emacs
+;;   which prevents coq-company's auto-completion from showing up.
+;;   One simple fix is to disable coq-company-mode then re-enable it.
+;;   A mort convenient fix is described here :
+;; https://github.com/doomemacs/doomemacs/issues/2868
+;; https://github.com/doomemacs/doomemacs/pull/2857
+;; `+company-init-backends-h' in `after-change-major-mode-hook' overrides
+;; `company-backends' set by `company-coq' package. This dirty hack fixes
+;; completion in coq-mode. TODO: remove when company backends builder is
+;; reworked.
+(defvar-local +coq--company-backends nil)
+(after! company-coq
+  (defun +coq--record-company-backends-h ()
+    (setq +coq--company-backends company-backends))
+  (defun +coq--replay-company-backends-h ()
+    (setq company-backends +coq--company-backends))
+  (add-hook! 'company-coq-mode-hook
+    (defun +coq--fix-company-coq-hack-h ()
+      (add-hook! 'after-change-major-mode-hook :local #'+coq--record-company-backends-h)
+      (add-hook! 'after-change-major-mode-hook :append :local #'+coq--replay-company-backends-h))))
+
+;; disable company-coq symbol prettification
+(setq company-coq-disabled-features '(prettify-symbols))
+;; enable company-coq in coq-mode
+(add-hook 'coq-mode-hook #'company-coq-mode)
 
 ;; ---------------------------------------------------------------------------- ;;
 ;;                                                                              ;;
