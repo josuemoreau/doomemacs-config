@@ -368,6 +368,11 @@
 (after! doom-editor
   (add-to-list 'doom-detect-indentation-excluded-modes 'coq-mode))
 
+(eval-after-load "proof-script"
+  '(progn
+     (setq electric-indent-mode nil)
+     ))
+
 ;; ---------------------------------------------------------------------------- ;;
 ;;                                                                              ;;
 ;;                            PYTHON CONFIGURATION                              ;;
