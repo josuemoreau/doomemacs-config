@@ -400,7 +400,9 @@
       (add-hook! 'after-change-major-mode-hook :append :local #'+coq--replay-company-backends-h))))
 
 ;; disable company-coq symbol prettification
-(setq company-coq-disabled-features '(prettify-symbols))
+(with-eval-after-load 'company-coq
+  (dolist (feature '(prettify-symbols snippets))
+    (add-to-list 'company-coq-disabled-features feature)))
 ;; enable company-coq in coq-mode
 (add-hook 'coq-mode-hook #'company-coq-mode)
 
