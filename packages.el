@@ -8,10 +8,10 @@
 
 ;; To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
 ;(package! some-package)
-(package! tuareg)
+;; (package! tuareg)
 (package! fill-column-indicator)
-(package! proof-general)
-(package! company-coq)
+;; (package! proof-general)
+;; (package! company-coq)
 (package! company-jedi)
 (package! pyvenv)
 (package! auctex)
