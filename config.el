@@ -110,7 +110,7 @@
 
 (remove-hook 'doom-first-buffer-hook #'smartparens-global-mode)
 
-(setq doom-theme 'doom-dracula)
+(setq doom-theme 'doom-gruvbox)
 
 ;; ---------------------------------------------------------------------------- ;;
 ;;                                                                              ;;
@@ -365,6 +365,10 @@
           (lambda ()
             (progn
               (setq abbrev-expand-function #'ignore)
+              ;; redefine some coq faces according to the theme
+              (face-remap-add-relative 'coq-solve-tactics-face '(:inherit font-lock-keyword-face))
+              (face-remap-add-relative 'proof-tactics-name-face '(:inherit font-lock-constant-face))
+              (face-remap-add-relative 'proof-tacticals-name-face '(:inherit font-lock-variable-name-face))
               )))
 
 ;; Fix for slow startup in doom emacs
