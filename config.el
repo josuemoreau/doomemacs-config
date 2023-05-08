@@ -129,7 +129,8 @@
               (seq "magit-diff" (zero-or-more anything))
               (seq "magit-process" (zero-or-more anything))
               (seq "magit-revision" (zero-or-more anything))
-              (seq "magit-stash" (zero-or-more anything)))
+              (seq "magit-stash" (zero-or-more anything))
+              (seq "*" (zero-or-more anything) "*"))
               eos)
   "Regular expression matching buffers ignored by `next-buffer' and
 `previous-buffer'."
