@@ -373,6 +373,9 @@
               (face-remap-add-relative 'coq-solve-tactics-face '(:inherit font-lock-keyword-face))
               (face-remap-add-relative 'proof-tactics-name-face '(:inherit font-lock-constant-face))
               (face-remap-add-relative 'proof-tacticals-name-face '(:inherit font-lock-variable-name-face))
+              ;; disable yasnippet on 'TAB' key
+              (define-key yas-minor-mode-map [(tab)] nil)
+              (define-key yas-minor-mode-map (kbd "TAB") nil)
               )))
 
 ;; Fix for slow startup in doom emacs
