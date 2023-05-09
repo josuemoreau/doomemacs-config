@@ -207,6 +207,9 @@
 
 (global-set-key (kbd "C-x C-;") 'comment-line)
 
+;; Disable 'insert' key
+(define-key global-map [(insert)] nil)
+
 ;; ---------------------------------------------------------------------------- ;;
 ;;                                                                              ;;
 ;;                      CUSTOM MODULES FOR SOME LANGUAGES                       ;;
