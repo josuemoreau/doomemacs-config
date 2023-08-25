@@ -112,6 +112,9 @@
 
 (setq doom-theme 'doom-gruvbox)
 
+(setenv "ESHELL" (expand-file-name "~/.doom.d/eshell"))
+;; (exec-path-from-shell-initialize)
+
 ;; ---------------------------------------------------------------------------- ;;
 ;;                                                                              ;;
 ;;                            BUFFERS CONFIGURATION                             ;;
@@ -209,6 +212,8 @@
 
 ;; Disable 'insert' key
 (define-key global-map [(insert)] nil)
+;; (define-key global-map [(kbd "C-z")] nil)
+(global-set-key (kbd "C-z") nil)
 
 ;; ---------------------------------------------------------------------------- ;;
 ;;                                                                              ;;
@@ -373,9 +378,6 @@
               (face-remap-add-relative 'coq-solve-tactics-face '(:inherit font-lock-keyword-face))
               (face-remap-add-relative 'proof-tactics-name-face '(:inherit font-lock-constant-face))
               (face-remap-add-relative 'proof-tacticals-name-face '(:inherit font-lock-variable-name-face))
-              ;; disable yasnippet on 'TAB' key
-              (define-key yas-minor-mode-map [(tab)] nil)
-              (define-key yas-minor-mode-map (kbd "TAB") nil)
               )))
 
 ;; Fix for slow startup in doom emacs
@@ -412,6 +414,9 @@
 
 ;; disable company-coq symbol prettification
 (with-eval-after-load 'company-coq
+  ;; disable yasnippet on 'TAB' key
+  (define-key yas-minor-mode-map [(tab)] nil)
+  (define-key yas-minor-mode-map (kbd "TAB") nil)
   (dolist (feature '(prettify-symbols snippets))
     (add-to-list 'company-coq-disabled-features feature)))
 ;; enable company-coq in coq-mode
@@ -467,6 +472,22 @@
  '((emacs-lisp . t)
    (python . t)
    (ocaml . t)))
+
+(defadvice! +org-latex-preview-scale-a (img)
+  "Make org latex preview respect `image-scaling-factor'."
+  :filter-return #'org--make-preview-overlay
+  (plist-put (cdr img) :scale (image-compute-scaling-factor image-scaling-factor)))
+(setq-hook! 'text-scale-mode-hook
+  image-scaling-factor (math-pow text-scale-mode-step text-scale-mode-amount))
+
+;; include preamble.sty file for both PDF render and preview
+;; see: https://emacs.stackexchange.com/questions/60696/make-org-latex-preview-load-package-so-that-it-properly-renders-tcolorbox-en
+(with-eval-after-load 'org
+    (add-to-list 'org-latex-packages-alist '("" "./preamble" t)))
+
+(setq org-preview-latex-default-process 'imagemagick)
+
+(add-hook 'org-mode-hook 'org-fragtog-mode)
 
 ;; ---------------------------------------------------------------------------- ;;
 ;;                                                                              ;;
