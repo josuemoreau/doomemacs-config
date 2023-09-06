@@ -475,7 +475,8 @@
   (interactive nil)
   (setq font-latex-fontify-sectioning 1.3) ;; headers with larger font
   (font-latex-update-sectioning-faces)
-  (setq compile-command "rubber --pdf main.tex"))
+  ;; (setq compile-command "rubber --pdf main.tex")
+  )
 
 (add-hook 'latex-mode-hook 'flyspell-mode)
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
